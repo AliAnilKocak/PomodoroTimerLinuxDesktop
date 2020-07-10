@@ -15,8 +15,6 @@ void main() {
       final screenFrame = window.screen.visibleFrame;
       final width = math.max((screenFrame.width / 4).roundToDouble(), 800.0);
       final height = math.max((screenFrame.height / 12).roundToDouble(), 600.0);
-      final left = ((screenFrame.width - width) / 4).roundToDouble();
-      final top = ((screenFrame.height - height) / 12).roundToDouble();
       final frame = Rect.fromLTWH((screenFrame.height) / 1.8,
           (screenFrame.width) / 6, width, (screenFrame.height - height) / 2.0);
       window_size.setWindowFrame(frame);
@@ -56,142 +54,141 @@ class _MyHomePageState extends State<MyHomePage> {
   String currentBreakTime = "05:00";
   String currentWorkTime = "25:00";
   bool currentUseWork = true;
-  bool bayrak = true;
-
-  int workTimeStamp = DateTime
-      .now()
-      .add(Duration(minutes: 25, seconds: 0))
-      .millisecondsSinceEpoch;
-
-  int breakTimeStamp = DateTime
-      .now()
-      .add(Duration(minutes: 5, seconds: 0))
-      .millisecondsSinceEpoch;
-
   int currentMinuteForWork;
   int currentSecondForWork;
   int currentMinuteForBreak;
   int currentSecondForBreak;
 
+  int workTimeStamp = DateTime.now()
+      .add(Duration(minutes: 25, seconds: 0))
+      .millisecondsSinceEpoch;
+
+  int breakTimeStamp = DateTime.now()
+      .add(Duration(minutes: 5, seconds: 0))
+      .millisecondsSinceEpoch;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFFCF8465), Color(0xFFAA6A7F)]),
-          ),
-          padding: const EdgeInsets.only(
-              top: 24, bottom: 48, left: 48, right: 48),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+      decoration: buildBoxDecoration(),
+      padding: const EdgeInsets.only(top: 24, bottom: 48, left: 48, right: 48),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Ionicons.ios_timer,
-                    color: Colors.white.withOpacity(0.9),
-                    size: 36,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    'Pomodoro Timer',
-                    style: buildTextStyleOpenSans(),
-                  ),
-                ],
+              Icon(
+                Ionicons.ios_timer,
+                color: Colors.white.withOpacity(0.9),
+                size: 36,
               ),
               SizedBox(
-                height: 24,
+                width: 12,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  !this.currentUseWork
-                      ? Container()
-                      : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      !workTimeIsPlaying
-                          ? Text(
-                        this.currentWorkTime,
-                        style: buildTextStyleTimes(),
-                      )
-                          : buildWorkCountDown(),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      buildWorkActionButton(),
-                      SizedBox(
-                        height: 12,
-                      ),
+              Text(
+                'Pomodoro Timer',
+                style: buildTextStyleOpenSans(),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              !this.currentUseWork
+                  ? Container()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        !workTimeIsPlaying
+                            ? Text(
+                                this.currentWorkTime,
+                                style: buildTextStyleTimes(),
+                              )
+                            : buildWorkCountDown(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        buildWorkActionButton(),
+                        SizedBox(
+                          height: 12,
+                        ),
 //                      buildWorkResetButton(),
 //                      SizedBox(
 //                        height: 16,
 //                      ),
-                      !workTimeIsPlaying
-                          ? Container()
-                          : FadeAnimatedTextKit(
-                          onTap: () {
-                            print("Tap Event");
-                          },
-                          text: ["Work Time"],
-                          textStyle: buildTextStyleTimes()
-                              .copyWith(fontSize: 32),
-                          textAlign: TextAlign.start,
-                          alignment: AlignmentDirectional
-                              .topStart // or Alignment.topLeft
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 32,
-                  ),
-                  this.currentUseWork
-                      ? Container()
-                      : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      !breakTimeIsPlaying
-                          ? Text(
-                        this.currentBreakTime,
-                        style: buildTextStyleTimes(),
-                      )
-                          : buildBreakCountDown(),
-                      buildBreakActionButton(),
+                        !workTimeIsPlaying
+                            ? Container()
+                            : FadeAnimatedTextKit(
+                                onTap: () {
+                                  print("Tap Event");
+                                },
+                                text: ["Work Time"],
+                                textStyle: buildTextStyleTimes()
+                                    .copyWith(fontSize: 32),
+                                textAlign: TextAlign.start,
+                                alignment: AlignmentDirectional
+                                    .topStart // or Alignment.topLeft
+                                )
+                      ],
+                    ),
+              SizedBox(
+                width: 32,
+              ),
+              this.currentUseWork
+                  ? Container()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        !breakTimeIsPlaying
+                            ? Text(
+                                this.currentBreakTime,
+                                style: buildTextStyleTimes(),
+                              )
+                            : buildBreakCountDown(),
+                        buildBreakActionButton(),
 //                      SizedBox(
 //                        height: 24,
 //                      ),
 //                      buildBreakResetButton(),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      !breakTimeIsPlaying
-                          ? Container()
-                          : FadeAnimatedTextKit(
-                          onTap: () {
-                            print("Tap Event");
-                          },
-                          text: ["Break Time"],
-                          textStyle: buildTextStyleTimes()
-                              .copyWith(fontSize: 32),
-                          textAlign: TextAlign.start,
-                          alignment: AlignmentDirectional
-                              .topStart // or Alignment.topLeft
-                      )
-                    ],
-                  )
-                ],
-              ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        !breakTimeIsPlaying
+                            ? Container()
+                            : FadeAnimatedTextKit(
+                                onTap: () {
+                                  print("Tap Event");
+                                },
+                                text: ["Break Time"],
+                                textStyle: buildTextStyleTimes()
+                                    .copyWith(fontSize: 32),
+                                textAlign: TextAlign.start,
+                                alignment: AlignmentDirectional
+                                    .topStart // or Alignment.topLeft
+                                )
+                      ],
+                    )
             ],
           ),
-        ));
+        ],
+      ),
+    ));
+  }
+
+  BoxDecoration buildBoxDecoration() {
+    return BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFCF8465), Color(0xFFAA6A7F)]),
+    );
   }
 
   InkWell buildBreakResetButton() {
@@ -220,7 +217,6 @@ class _MyHomePageState extends State<MyHomePage> {
       onTap: () {
         setState(() {
           this.currentWorkTime = "25:00";
-          this.bayrak = true;
         });
       },
       child: Container(
@@ -242,19 +238,15 @@ class _MyHomePageState extends State<MyHomePage> {
           this.currentUseWork = false;
         });
         int currentBreakTime =
-        ((this.breakTimeStamp - DateTime
-            .now()
-            .millisecondsSinceEpoch) /
-            1000)
-            .floor();
+            ((this.breakTimeStamp - DateTime.now().millisecondsSinceEpoch) /
+                    1000)
+                .floor();
 
         if (!this.breakTimeIsPlaying) {
           print("Durduruldu..");
           this.breakTimeStamp =
-              ((this.breakTimeStamp - DateTime
-                  .now()
-                  .millisecondsSinceEpoch) /
-                  1000)
+              ((this.breakTimeStamp - DateTime.now().millisecondsSinceEpoch) /
+                      1000)
                   .floor();
           this.currentMinuteForBreak = (currentBreakTime / 60).floor();
           this.currentSecondForBreak = currentBreakTime % 60;
@@ -265,11 +257,10 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           print("Devam ettiriliyor..");
           setState(() {
-            this.breakTimeStamp = DateTime
-                .now()
+            this.breakTimeStamp = DateTime.now()
                 .add(Duration(
-                minutes: this.currentMinuteForBreak,
-                seconds: this.currentSecondForBreak))
+                    minutes: this.currentMinuteForBreak,
+                    seconds: this.currentSecondForBreak))
                 .millisecondsSinceEpoch;
           });
         }
@@ -289,11 +280,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return InkWell(
       onTap: () {
         setState(() {
-          this.bayrak = false;
-
           this.workTimeIsPlaying = !this.workTimeIsPlaying;
           this.breakTimeIsPlaying = false;
-
           this.currentUseWork = true;
         });
 
@@ -302,20 +290,17 @@ class _MyHomePageState extends State<MyHomePage> {
             this.init = false;
           });
 
-          this.workTimeStamp = DateTime
-              .now()
+          this.workTimeStamp = DateTime.now()
               .add(Duration(minutes: 25, seconds: 0))
               .millisecondsSinceEpoch;
         }
 
         if (!this.workTimeIsPlaying) {
-          print("Durduruldu..");
+          print("Paused..");
           int currentWorkTime =
-          ((this.workTimeStamp - DateTime
-              .now()
-              .millisecondsSinceEpoch) /
-              1000)
-              .floor();
+              ((this.workTimeStamp - DateTime.now().millisecondsSinceEpoch) /
+                      1000)
+                  .floor();
           this.currentMinuteForWork = (currentWorkTime / 60).floor();
           this.currentSecondForWork = currentWorkTime % 60;
           setState(() {
@@ -325,13 +310,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     "${_getNumberAddZero(currentSecondForWork)}";
           });
         } else {
-          print("Devam ettiriliyor..");
+          print("Playing..");
           setState(() {
-            this.workTimeStamp = DateTime
-                .now()
+            this.workTimeStamp = DateTime.now()
                 .add(Duration(
-                minutes: this.currentMinuteForWork,
-                seconds: this.currentSecondForWork))
+                    minutes: this.currentMinuteForWork,
+                    seconds: this.currentSecondForWork))
                 .millisecondsSinceEpoch;
           });
         }
@@ -355,8 +339,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             this.workTimeIsPlaying = false;
             this.breakTimeIsPlaying = true;
-            this.breakTimeStamp = DateTime
-                .now()
+            this.breakTimeStamp = DateTime.now()
                 .add(Duration(minutes: 5, seconds: 0))
                 .millisecondsSinceEpoch;
 
@@ -410,8 +393,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void setWorkTime(int minute) {
     setState(() {
-      this.workTimeStamp = DateTime
-          .now()
+      this.workTimeStamp = DateTime.now()
           .add(Duration(days: 0, hours: 0, minutes: minute))
           .millisecondsSinceEpoch;
     });
@@ -419,8 +401,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void setBreakTime(int minute) {
     setState(() {
-      this.breakTimeStamp = DateTime
-          .now()
+      this.breakTimeStamp = DateTime.now()
           .add(Duration(days: 0, hours: 0, minutes: minute))
           .millisecondsSinceEpoch;
     });
